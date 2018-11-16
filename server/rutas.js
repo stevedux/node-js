@@ -4,7 +4,7 @@ const Eventos = require('./modelEvento.js')
 
 
 
-// Agregar a un usuario
+// Agregar un usuario
 Router.post('/new', function(req, res) {
     let user = new Users({
         userId: Math.floor(Math.random() * 50),
@@ -33,7 +33,6 @@ Router.post('/login', function(req, res) {
             res.json(err)
         }
 
-
         if (doc) {
             response ='Validado';
         } else {
@@ -41,39 +40,11 @@ Router.post('/login', function(req, res) {
         }
         res.send(response);
 
-
        //res.json(doc) 
-       //res.send("Validado")
-        
+       //res.send("Validado")        
         
     })
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //Obtener todos los eventos
@@ -87,6 +58,64 @@ Router.get('/all', function(req, res) {
     })
 })
 
+// Agregar un evento
+Router.post('/newEvento', function(req, res) {
+    let Evento = new Eventos({
+        title: req.body.title,
+        start: req.body.start,
+        end: req.body.end,
+        nombre: req.body.nombre,
+        id: Math.floor(Math.random() * 50)
+    })
+    Evento.save(function(error) {
+        if (error) {
+            res.status(500)
+            res.json(error)
+        }
+        res.send("Evento Guardado")
+    })
+})
+
+
+
+// Eliminar un evento por su id
+Router.post('/delete', function(req, res) {
+    let eid = req.body.id
+    Eventos.remove({id: eid}, function(error) {
+        if(error) {
+            res.status(500)
+            res.json(error)
+        }
+        res.send("Evento eliminado")
+    })
+})
+
+
+// actualizar un evento por su id
+Router.post('/update', function(req, res) {
+    let eid = req.body.id
+    let eNewFecha = req.body.nuevaFecha
+    Eventos.update({id : eid}, {$set: {start : "2018-11-28T07:10:00"}}, function(error) {
+        if(error) {
+            res.status(500)
+            res.json(error)
+        }
+        res.send("Evento Actualizado")
+    })
+})
+
+
+//db.eventos.update({id:"28"}, {$set:  {start: "2018-11-11T07:10:00"}})
+
+
+
+
+
+
+
+
+
+
 // Obtener un usuario por su id
 Router.get('/', function(req, res) {
     let nombre = req.query.nombre
@@ -99,34 +128,7 @@ Router.get('/', function(req, res) {
     })
 })
 
-// Agregar un evento
-Router.post('/newEvento', function(req, res) {
-    let Evento = new Eventos({
-        title: req.body.title,
-        start: req.body.start,
-        end: req.body.end,
-        nombre: req.body.nombre
-    })
-    Evento.save(function(error) {
-        if (error) {
-            res.status(500)
-            res.json(error)
-        }
-        res.send("Evento Guardado")
-    })
-})
 
-// Eliminar un usuario por su id
-Router.get('/delete/:id', function(req, res) {
-    let uid = req.params.id
-    Users.remove({userId: uid}, function(error) {
-        if(error) {
-            res.status(500)
-            res.json(error)
-        }
-        res.send("Registro eliminado")
-    })
-})
 
 // Inactivar un usuario por su id
 Router.post('/inactive/:id', function(req, res) {
