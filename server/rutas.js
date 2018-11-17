@@ -40,8 +40,7 @@ Router.post('/login', function(req, res) {
         }
         res.send(response);
 
-       //res.json(doc) 
-       //res.send("Validado")        
+
         
     })
 })
@@ -95,7 +94,7 @@ Router.post('/delete', function(req, res) {
 Router.post('/update', function(req, res) {
     let eid = req.body.id
     let eNewFecha = req.body.nuevaFecha
-    Eventos.update({id : eid}, {$set: {start : "2018-11-28T07:10:00"}}, function(error) {
+    Eventos.update({id : eid}, {$set: {start : eNewFecha}}, function(error) {
         if(error) {
             res.status(500)
             res.json(error)
@@ -105,39 +104,10 @@ Router.post('/update', function(req, res) {
 })
 
 
-//db.eventos.update({id:"28"}, {$set:  {start: "2018-11-11T07:10:00"}})
 
 
 
 
 
-
-
-
-
-
-// Obtener un usuario por su id
-Router.get('/', function(req, res) {
-    let nombre = req.query.nombre
-    Users.findOne({nombres: nombre}).exec(function(err, doc){
-        if (err) {
-            res.status(500)
-            res.json(err)
-        }
-        res.json(doc)
-    })
-})
-
-
-
-// Inactivar un usuario por su id
-Router.post('/inactive/:id', function(req, res) {
-
-})
-
-// Activar un usuario por su id
-Router.post('/active/:id', function(req, res) {
-
-})
 
 module.exports = Router

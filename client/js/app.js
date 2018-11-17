@@ -23,12 +23,22 @@ class EventManager {
         })
     }
 
-    actualizarEvento(evento){
+    actualizarEvento(evento,fecha){
         let eventId = evento.id
         let eventNuevaFecha = evento.start._i
 
+        let eventNuevoDia = parseInt(eventNuevaFecha.substring(8, 10)) + parseInt(fecha._days)
+        eventNuevaFecha = eventNuevaFecha.substring(0, 8) + eventNuevoDia + eventNuevaFecha.substring(10)
 
-        let url = this.urlBase + "/update"
+     
+        /*console.log(evento)
+        console.log(evento._start._i)
+        console.log(fecha._days)
+
+        console.log(eventNuevaFecha)*/
+
+
+       let url = this.urlBase + "/update"
 
         console.log({id: eventId,nuevaFecha : eventNuevaFecha})
 
@@ -36,7 +46,9 @@ class EventManager {
             alert(response)
         })
 
-        $('.calendario').fullCalendar('updateEvents',evento)
+        $('.calendario').fullCalendar('updateEvent',evento)
+
+
 
 
 
@@ -116,7 +128,7 @@ class EventManager {
 
     inicializarCalendario(eventos) {
 
-        console.log(eventos)  
+        //console.log(eventos)  
         
         $('.calendario').fullCalendar({
             header: {
@@ -131,8 +143,8 @@ class EventManager {
             droppable: true,
             dragRevertDuration: 0,
             timeFormat: 'H:mm',
-            eventDrop: (event) => {
-                this.actualizarEvento(event)
+            eventDrop: (event,date) => {
+                this.actualizarEvento(event,date)
             },
             events: eventos,
             eventDragStart: (event,jsEvent) => {
